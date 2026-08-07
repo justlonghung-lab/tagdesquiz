@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0a0a0f" />
+  <meta name="description" content="TAG DES QUIZ — Bài kiểm tra sau training design" />
+  <title>TAG DES QUIZ</title>
+  <link rel="stylesheet" href="styles.css?v=1.4.1" />
+</head>
+<body>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+
+  <main id="app" class="app-shell">
+    <section id="landingView" class="view landing-view">
+      <div class="landing-stage">
+        <article class="landing-card panel">
+          <h1>TAG DES QUIZ</h1>
+
+          <div class="landing-meta" aria-label="Tổng quan bài thi">
+            <span>58 câu</span>
+            <span>45 phút</span>
+            <span>100 điểm</span>
+          </div>
+
+          <div class="landing-info-grid">
+            <section class="landing-info-panel" aria-labelledby="scoreInfoTitle">
+              <div class="landing-info-heading">
+                <p id="scoreInfoTitle">Điểm theo phần</p>
+                <span>Tổng 100</span>
+              </div>
+              <div id="landingScoreGrid" class="landing-score-grid"></div>
+            </section>
+
+            <section class="landing-info-panel" aria-labelledby="levelInfoTitle">
+              <div class="landing-info-heading">
+                <p id="levelInfoTitle">Phân loại</p>
+                <span>Theo tổng điểm</span>
+              </div>
+              <div id="landingLevelGrid" class="landing-level-grid"></div>
+            </section>
+          </div>
+
+          <form id="startForm" class="start-form landing-form" novalidate>
+            <label class="sr-only" for="participantName">Tên nhân sự</label>
+            <input id="participantName" name="participantName" type="text" maxlength="60"
+                   autocomplete="name" placeholder="Nhập họ tên" />
+            <button id="startButton" type="submit" class="primary-button landing-start-button">
+              Bắt đầu bài thi
+              <span aria-hidden="true">→</span>
+            </button>
+            <p id="nameError" class="form-error" role="alert" hidden>Vui lòng nhập tên nhân sự.</p>
+          </form>
+        </article>
+      </div>
+    </section>
+
+    <section id="quizView" class="view quiz-view" hidden>
+      <header class="quiz-header panel">
+        <div class="quiz-brand">
+          <span class="brand-mark small" aria-hidden="true">T</span>
+          <div>
+            <p class="eyebrow">TAG DES QUIZ</p>
+            <strong id="participantLabel"></strong>
+          </div>
+        </div>
+
+        <div class="header-progress" aria-label="Tiến độ bài thi">
+          <div class="progress-copy">
+            <span id="overallProgressText">Câu 1 / 58</span>
+            <span id="answeredProgressText">0 đã trả lời</span>
+          </div>
+          <div class="progress-track"><span id="overallProgressBar"></span></div>
+        </div>
+
+        <div id="timerBox" class="timer-box" aria-live="polite">
+          <span class="timer-label">Thời gian còn lại</span>
+          <strong id="timerText">45:00</strong>
+        </div>
+      </header>
+
+      <div class="quiz-layout">
+        <aside class="topic-panel panel">
+          <p class="eyebrow">CHỦ ĐỀ</p>
+          <div id="topicNavigation" class="topic-navigation"></div>
+        </aside>
+
+        <section class="question-panel panel">
+          <div class="question-meta">
+            <span id="topicBadge" class="topic-badge"></span>
+            <span id="topicQuestionCount"></span>
+          </div>
+
+          <h2 id="questionText" class="question-text"></h2>
+          <div id="answerList" class="answer-list" role="radiogroup" aria-label="Các phương án trả lời"></div>
+
+
+          <footer class="question-footer">
+            <p id="answerHint">Chọn một phương án để tiếp tục.</p>
+          </footer>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <div id="resultModal" class="modal-backdrop" hidden>
+    <section class="result-modal panel" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+      <div class="result-heading">
+        <div>
+          <p id="resultEyebrow" class="eyebrow">KẾT QUẢ BÀI THI</p>
+          <h2 id="resultTitle">Hoàn thành bài kiểm tra</h2>
+          <p id="resultSubtitle"></p>
+        </div>
+        <span id="passBadge" class="pass-badge"></span>
+      </div>
+
+      <div class="result-tabs" role="tablist" aria-label="Nội dung kết quả">
+        <button id="resultOverviewTab" class="result-tab active" type="button" role="tab"
+                aria-selected="true" aria-controls="resultOverviewPanel">Tổng quan</button>
+        <button id="resultReviewTab" class="result-tab" type="button" role="tab"
+                aria-selected="false" aria-controls="resultReviewPanel">Kết quả &amp; giải thích</button>
+      </div>
+
+      <div id="resultOverviewPanel" class="result-tab-panel" role="tabpanel"
+           aria-labelledby="resultOverviewTab">
+      <div class="score-hero">
+        <div class="score-ring" id="scoreRing">
+          <div>
+            <strong id="totalScore">0.0</strong>
+            <span>/ 100</span>
+          </div>
+        </div>
+        <div class="score-summary">
+          <div class="level-row">
+            <span id="levelBadge" class="level-badge">C</span>
+            <div>
+              <strong id="levelName"></strong>
+              <p id="levelDescription"></p>
+            </div>
+          </div>
+          <div class="result-metrics">
+            <div><span>Đúng</span><strong id="correctMetric">0 / 58</strong></div>
+            <div><span>Thời gian</span><strong id="timeMetric">00:00</strong></div>
+            <div><span>Bỏ trống</span><strong id="unansweredMetric">0</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="capability-grid">
+        <article>
+          <span>Tư duy thiết kế</span>
+          <strong id="thinkingScore">0%</strong>
+          <div class="metric-track"><span id="thinkingBar"></span></div>
+        </article>
+        <article>
+          <span>Kỹ thuật thực thi</span>
+          <strong id="executionScore">0%</strong>
+          <div class="metric-track"><span id="executionBar"></span></div>
+        </article>
+      </div>
+
+      <div class="breakdown-section">
+        <div class="section-title-row">
+          <h3>Điểm theo từng phần</h3>
+          <span id="coreScoreLabel"></span>
+        </div>
+        <div id="scoreBreakdown" class="score-breakdown"></div>
+      </div>
+
+      <div id="resultNote" class="result-note"></div>
+
+      </div>
+
+      <div id="resultReviewPanel" class="result-tab-panel" role="tabpanel"
+           aria-labelledby="resultReviewTab" hidden>
+        <div class="review-summary">
+          <div>
+            <h3>Lịch sử trả lời</h3>
+            <p>Lọc riêng câu sai, câu đúng hoặc xem toàn bộ bài làm.</p>
+          </div>
+          <span id="reviewSummaryBadge"></span>
+        </div>
+        <div id="reviewFilterBar" class="review-filter-bar" role="group" aria-label="Lọc kết quả câu hỏi">
+          <button class="review-filter active" type="button" data-review-filter="wrong">
+            Sai &amp; bỏ trống <span id="reviewWrongCount">0</span>
+          </button>
+          <button class="review-filter" type="button" data-review-filter="correct">
+            Trả lời đúng <span id="reviewCorrectCount">0</span>
+          </button>
+          <button class="review-filter" type="button" data-review-filter="all">
+            Tất cả <span id="reviewAllCount">58</span>
+          </button>
+        </div>
+        <div id="resultReviewList" class="result-review-list"></div>
+      </div>
+
+      <footer class="result-actions">
+        <button id="copyResultButton" class="secondary-button" type="button">Sao chép kết quả</button>
+        <button id="restartButton" class="primary-button" type="button">Làm bài mới</button>
+      </footer>
+    </section>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="questions.js?v=1.4.1"></script>
+  <script src="app.js?v=1.4.1"></script>
+</body>
+</html>
